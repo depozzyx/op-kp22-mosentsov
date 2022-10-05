@@ -1,6 +1,6 @@
 Репозиторій студента Мосенцова Івана групи КП-22 для зберігання лабораторних робіт з дисципліни ОП
 
 ## Практики та дати
-`sem_1_prakt_1` - 20.09.2022
-`sem_1_prakt_2` - 04.10.2022
-`sem_1_prakt_3` - 05.10.2022 (only git setup, no brach nor folder)
+- `sem_1_prakt_1` 20.09.2022
+- `sem_1_prakt_2` 04.10.2022
+- `sem_1_prakt_3` 05.10.2022 (only git setup, no brach nor folder)
