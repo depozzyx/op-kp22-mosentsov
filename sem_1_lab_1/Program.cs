@@ -31,7 +31,17 @@ public class Program
 
     public static void Task2()
     {
-
+        long n = (long) readDouble("ціле число");
+        bool isNumberPrime = isPrime(n);
+        Console.WriteLine("Число " + n + " " + (isNumberPrime ? "є простим" : "не є простим"));
+    }
+    private static bool isPrime(long number)
+    {   
+        for (int i = 2; i < (Math.Abs(number) / 2); i += 1)
+        {
+            if ((number % i) == 0) return false;
+        }
+        return true;
     }
 
 
@@ -41,7 +51,7 @@ public class Program
         Console.WriteLine(f + "! = " + mathFactorial(f));
 
         double x = readDouble("базу x степеня x^n");
-        int n = (int) readDouble("степінь n степеня x^n");
+        int n = (int) readDouble("цілий степінь n степеня x^n");
         Console.WriteLine(x + "^" + (n >= 0 ? ("" + n) : ("(" + n + ")")) + " = " + mathPow(x, n));
     }
     private static double mathFactorial(double number) 
@@ -64,7 +74,7 @@ public class Program
         }
 
         double result = 1;
-        for (int _ = 0; _ < n; _++) result *= powBase;
+        for (int _ = 0; _ < n; _ += 1) result *= powBase;
 
         return isNegative ? 1/result : result;
     }
