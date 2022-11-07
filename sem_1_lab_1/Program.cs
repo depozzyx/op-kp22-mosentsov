@@ -82,6 +82,32 @@ public class Program
 
     public static void Task4()
     {
+        double[] testCases = {1, 2, 3.14, 1.58, 0, 3.14 + 1.58, 5, 12, 10, 8, 6, 4, 6.38};
+        uint prescision = (uint) readDouble("точність ф-ції sin (число більше 2, рекомендовано: 10)");
 
+        Console.WriteLine("\nТестові сценарії(" + testCases.Length + ") :");
+        Console.WriteLine("sin(x) = {моя ф-ція} || {бібліотечна ф-ція}");
+        // мабуть не вчили foreach, але тут він найкращий
+        foreach (double x in testCases) 
+        {
+            Console.WriteLine("sin(" + x + ") = " + mathSin(x, prescision) + " || " + Math.Sin(x));
+        }
+
+    }
+    private static double mathSin(double x, uint prescision = 10)
+    {
+        // якщо більше PI*2 то цей алгоритм погано працює
+        // тому нормалізую аргументи до [-PI*2, PI*2]
+        x = x % (Math.PI * 2); 
+
+        double result = 0;
+        for (int i = 0; i < prescision; i++)
+        {
+            int k = 2 * i + 1;
+            int sign = (i % 2 == 0) ? 1 : -1;
+            result += sign * (mathPow(x, k) / mathFactorial(k));
+        }
+
+        return result;
     }
 }
