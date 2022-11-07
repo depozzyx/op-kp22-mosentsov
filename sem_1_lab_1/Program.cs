@@ -32,10 +32,10 @@ public class Program
     public static void Task2()
     {
         long n = (long) readDouble("ціле число");
-        bool isNumberPrime = isPrime(n);
-        Console.WriteLine("Число " + n + " " + (isNumberPrime ? "є простим" : "не є простим"));
+        bool isPrime = mathIsPrime(n);
+        Console.WriteLine("Число " + n + " " + (isPrime ? "є простим" : "не є простим"));
     }
-    private static bool isPrime(long number)
+    private static bool mathIsPrime(long number)
     {   
         for (int i = 2; i < (Math.Abs(number) / 2); i += 1)
         {
