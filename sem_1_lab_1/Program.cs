@@ -25,7 +25,26 @@ public class Program
 
     public static void Task1()
     {
+        uint n = (uint) Math.Floor(readDouble("натуральне число - кількість проміжних значень"));
+        double xk = 5.2;
+        double x0 = 0.25;
+        double dx = 0.3;
+        double b = 0.8;
+        
+        double x = x0;
+        for (int i = 0; i < n; i++)
+        {   
+            double y = Math.Pow(x, 2.5 - b) * Math.Log(Math.Pow(x, 2) + 12.7);
+            Console.WriteLine("При x = " + x + " y = " + y);
 
+            x += dx;
+
+            if (x >= xk)
+            {
+                Console.WriteLine("Досягнуте значення xk, виходимо з циклу");
+                break;
+            }
+        }
     }
 
 
