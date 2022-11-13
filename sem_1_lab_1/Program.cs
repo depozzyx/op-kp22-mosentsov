@@ -101,7 +101,7 @@ public class Program
 
     public static void Task4()
     {
-        double[] testCases = {1, 2, 3.14, 1.58, 0, 3.14 + 1.58, 5, 12, 10, 8, 6, 4, 6.38};
+        double[] testCases = {1, 2, 3.14, 1.58, -3.14, 0, 3.14 + 1.58, 5, 12, -10, 8, 4, 6.38};
         uint prescision = (uint) readDouble("точність ф-ції sin (число більше 2, рекомендовано: 10)");
 
         Console.WriteLine("\nТестові сценарії(" + testCases.Length + ") :");
