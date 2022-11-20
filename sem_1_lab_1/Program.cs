@@ -4,17 +4,25 @@ public class Program
 {   
     public static void Main()
     {
-        Console.WriteLine("\nЗавдання #1 (варіант 14)");
-        Task1();
+        try
+        {
+            Console.WriteLine("\nЗавдання #1 (варіант 14)");
+            Task1();
 
-        Console.WriteLine("\nЗавдання #2");
-        Task2();
-        
-        Console.WriteLine("\nЗавдання #3");
-        Task3();
+            Console.WriteLine("\nЗавдання #2");
+            Task2();
+            
+            Console.WriteLine("\nЗавдання #3");
+            Task3();
 
-        Console.WriteLine("\nЗавдання #4");
-        Task4();
+            Console.WriteLine("\nЗавдання #4");
+            Task4();
+        }
+        catch (System.Exception e)
+        {
+            Console.WriteLine("Будь ласка, введіть правильне значення, за параметрами якими вас просять");
+            Console.WriteLine("Опис помилки: " + e.Message);
+        }
     }
     private static double readDouble(string variableName)
     {
@@ -23,6 +31,14 @@ public class Program
     }
 
 
+    /* Завдання #1 (варіант 14)
+     *
+     * Тест кейси: при n = 1 => x = 0.25 y = ~0.24
+     *             при n = 4 => x = 0.25 y = ~0.24
+     *                          x = 0.55 y = ~0.92
+     *                          x = 0.85 y = ~1.97
+     *                          x = 1.15 y = ~3.34
+     */
     public static void Task1()
     {
         uint n = (uint) Math.Floor(readDouble("натуральне число - кількість проміжних значень"));
@@ -48,6 +64,16 @@ public class Program
     }
 
 
+    /* Завдання #2
+     *
+     * Тест кейси: при n = 0 => Число не є простим
+     *             при n = 0.2 => *Помилка*
+     *             при n = -13 => Число не є простим
+     *             при n = 13 => Число є простим
+     *             при n = 1 => Число є простим
+     *             при n = 14 => Число не є простим
+     *             при n = 1200 => Число не є простим
+     */
     public static void Task2()
     {
         long n = (long) readDouble("ціле число");
@@ -56,6 +82,7 @@ public class Program
     }
     private static bool mathIsPrime(long number)
     {   
+        if (number <= 0) return false;
         for (int i = 2; i < (Math.Abs(number) / 2); i += 1)
         {
             if ((number % i) == 0) return false;
@@ -64,6 +91,19 @@ public class Program
     }
 
 
+    /* Завдання #3
+     *
+     * Тест кейси: при f = -1 => *Помилка*
+     *             при f = 0 => 1
+     *             при f = 1 => 1
+     *             при f = 5 => 120
+     *             при x = 0, n = 0 => *Помилка*
+     *             при x = 109, n = 0 => 1
+     *             при x = 1, n = 5 => 1
+     *             при x = 2, n = 5 => 32
+     *             при x = -2, n = 6 => 64
+     *             при x = 3, n = -2 => 1/9
+     */
     public static void Task3()
     {
         double f = readDouble("аргумент факторіалу");
@@ -77,6 +117,7 @@ public class Program
     {
         // ми рекурсію не вчили, але через неї
         // красиво раїується факторіал
+        if (number < 0) throw new ArgumentException(number + "! is not defined");
         if (number == 0) return 1;
         if (number == 1) return number; 
         return (double) mathFactorial(number - 1) * number;
@@ -99,6 +140,10 @@ public class Program
     }
 
 
+    /* Завдання #3
+     *
+     * Тест кейси: Саме завдання
+     */
     public static void Task4()
     {
         double[] testCases = {1, 2, 3.14, 1.58, -3.14, 0, 3.14 + 1.58, 5, 12, -10, 8, 4, 6.38};
