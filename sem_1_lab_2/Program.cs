@@ -205,6 +205,28 @@ class Tests {
     static void testPercolates()
     {
         head("Percolation.testPercolates()");
+        test("no error", () => {
+            Percolation.init(2);
+            return Percolation.percolates() == false;
+        });
+        test("percolates", () => {
+            Percolation.init(2);
+            Percolation.open(1, 1);
+            Percolation.open(2, 1);
+            return Percolation.percolates() == true;
+        });
+        test("does not percolate", () => {
+            Percolation.init(2);
+            Percolation.open(1, 1);
+            Percolation.open(2, 2);
+            return Percolation.percolates() == false;
+        });
+        test("does not percolate", () => {
+            Percolation.init(3);
+            Percolation.open(1, 1);
+            Percolation.open(2, 1);
+            return Percolation.percolates() == false;
+        });
         passed();
     }
 
@@ -219,60 +241,64 @@ class Tests {
         passed();
     }
 
-    // static void testInitSize(int matrixSize)
-    // {
-    //     size = matrixSize;
-    //     n = size * size + 2;
-    //     nodes = new int[n];
-    //     sizes = new int[n];
+    static void testInitSize()
+    {
+        head("UnionFind.initSize()");
+        test("no error", () => {
+            UnionFind.initSize(4);
+            return true;
+        });
+        passed();
+    }
 
-    //     for (int i = 0; i < nodes.Length; i++)
-    //         nodes[i] = i;
-    // }
+    static void testRoot()
+    {
+        head("UnionFind.root()");
+        test("no error", () => {
+            UnionFind.initSize(4);
+            UnionFind.root(3);
+            return true;
+        });
+        passed();
+    }
 
-    // static int testRoot(int x)
-    // {
-    //     int res = nodes[x];
-    //     while (res != nodes[res])
-    //         res = nodes[res];
+    static void testUnion4()
+    {
+        head("UnionFind.union4()");
+        test("no error", () => {
+            UnionFind.initSize(4);
+            UnionFind.union4(2, 3);
+            return true;
+        });
+        test("connected after union", () => {
+            UnionFind.initSize(4);
+            UnionFind.union4(1, 2);
+            return UnionFind.connected4(1, 2);
+        });
+        passed();
+    }
 
-    //     return res;
-    // }
+    static void testConnected4()
+    {
+        head("UnionFind.union4()");
+        test("no error", () => {
+            UnionFind.initSize(4);
+            UnionFind.union4(2, 3);
+            return true;
+        });
+        test("connected", () => {
+            UnionFind.initSize(4);
+            UnionFind.union4(2, 3);
+            return UnionFind.connected4(2, 3);
+        });
+        test("not connected", () => {
+            UnionFind.initSize(4);
+            UnionFind.union4(2, 3);
+            return UnionFind.connected4(1, 3) == false;
+        });
+        passed();
+    }
 
-    // static void testUnion4(int x, int y)
-    // {
-    //     int componentY = nodes[y];
-    //     int componentX = nodes[x];
-    //     int rootX = root(x);
-    //     int rootY = root(y);
-    //     if (componentY == componentX)
-    //     {
-    //         return;
-    //     }
-    //     int sizeX = sizes[rootX];
-    //     int sizeY = sizes[rootY];
-
-    //     if (sizeX > sizeY)
-    //     {
-    //         sizes[rootX] += sizeY;
-    //         nodes[rootY] = nodes[rootX];
-    //     }
-    //     else
-    //     {
-    //         sizes[rootY] += sizeX;
-    //         nodes[rootX] = rootY;
-    //     }
-    // }
-
-    // static bool testConnected4(int x, int y)
-    // {
-    //     int rootX = root(x);
-    //     int rootY = root(y);
-
-    //     return rootX == rootY;
-    // }
-
-    // test client (optional)
     static public void main()
     {
         Console.WriteLine("###### Testing ######");
@@ -284,6 +310,11 @@ class Tests {
         testOpen();
         testPercolates();
         testPrint();
+
+        testInitSize();
+        testRoot();
+        testConnected4();
+        testUnion4();
 
         Console.WriteLine("###### Testing ended ######");
         Console.WriteLine("###### Passed " + passedNumber + " tests ######");
@@ -322,7 +353,7 @@ class UnionFind
     static int[] nodes;
     static int[] sizes;
 
-    static void initSize(int matrixSize)
+    static public void initSize(int matrixSize)
     {
         size = matrixSize;
         n = size * size + 2;
@@ -364,7 +395,7 @@ class UnionFind
     }
 
 
-    static int root(int x)
+    static public int root(int x)
     {
         int res = nodes[x];
         while (res != nodes[res])
@@ -373,7 +404,7 @@ class UnionFind
         return res;
     }
 
-    static void union4(int x, int y)
+    static public void union4(int x, int y)
     {
         int componentY = nodes[y];
         int componentX = nodes[x];
@@ -398,7 +429,7 @@ class UnionFind
         }
     }
 
-    static bool connected4(int x, int y)
+    static public bool connected4(int x, int y)
     {
         int rootX = root(x);
         int rootY = root(y);
