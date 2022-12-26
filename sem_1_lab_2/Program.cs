@@ -15,7 +15,10 @@ class Percolation {
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 intialMatrix[i, j] = (int) CellState.Closed;
+
+        UnionFind.initSize(n);
     }
+
 
     // opens the site (row, col) if it is not open already
     static public void open(int row, int col)
@@ -33,7 +36,8 @@ class Percolation {
     // is the site (row, col) full?
     static public bool isFull(int row, int col)
     {
-        return intialMatrix[row - 1, col - 1] == (int) CellState.Closed;
+        UnionFind.main(intialMatrix);
+        return UnionFind.connected4(0, (row - 1)*intialMatrix.GetLength(0) + (col - 1) + 1);
     }
 
     // returns the number of open sites
@@ -70,7 +74,6 @@ class Percolation {
     static void Main(String[] args)
     {
         Tests.main();
-
         init(5);
 
         open(1, 2);
@@ -160,14 +163,16 @@ class Tests {
             Percolation.isFull(1, 1);
             return true;
         });
+        test("is full true", () => {
+            Percolation.init(4);
+            Percolation.open(1, 1);
+            Percolation.open(2, 1);
+            return Percolation.isFull(2, 1) == true;
+        });
         test("is full false", () => {
             Percolation.init(4);
             Percolation.open(2, 1);
             return Percolation.isFull(2, 1) == false;
-        });
-        test("is full true", () => {
-            Percolation.init(4);
-            return Percolation.isFull(1, 4);
         });
 
         passed();
@@ -336,6 +341,8 @@ class Tests {
             passedNumber += 1;
         } else {
             Console.WriteLine(" " + caseNumber + ": FAILED");
+            Console.WriteLine("... Waiting for input to continue ...");
+            Console.ReadLine();
         }
         caseNumber += 1;
     }
