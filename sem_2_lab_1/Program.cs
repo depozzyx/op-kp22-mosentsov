@@ -41,7 +41,10 @@ class TextFiles {
 
     static void Task2()
     {
-
+        string text = "12 13 14";
+        Console.WriteLine(text);
+        File.WriteAllText("task2.txt", text);
+        File.WriteAllText("task2_max.txt", "14");
     }
 
     static void Task3()
