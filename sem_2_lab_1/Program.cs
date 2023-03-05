@@ -50,10 +50,20 @@ class TextFiles {
      */
     static void Task2()
     {
-        string text = "12 13 14";
-        Console.WriteLine(text);
-        File.WriteAllText("task2.txt", text);
-        File.WriteAllText("task2_max.txt", "14");
+        System.Random random = new System.Random();
+        string numbers = "";
+        double max = -1;
+        for (int i = 0; i < 15; i++)
+        {
+            double number = Math.Round(random.NextDouble() * 100, 2);
+
+            if (i == 0) max = number;
+            else if (number > max) max = number;
+
+            numbers += number.ToString() + " "; 
+        }
+        File.WriteAllText("task2.txt", numbers);
+        File.WriteAllText("max.txt", max.ToString());
     }
 
     static void Task3()
