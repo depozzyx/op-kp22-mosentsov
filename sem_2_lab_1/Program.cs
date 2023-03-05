@@ -39,6 +39,15 @@ class TextFiles {
         File.WriteAllText("task1.txt", text);
     }
 
+    /* Завдання #2 
+     *
+     * Критерії роботи: 
+     *  1. Всього 15 чисел 
+     *  2. Усі числа рандомні float-и 
+     *  3. Запис робиться у файл task2.txt
+     *  4. Запис максимального робиться у файл max.txt 
+     *
+     */
     static void Task2()
     {
         string text = "12 13 14";
