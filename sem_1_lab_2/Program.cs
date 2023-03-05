@@ -85,6 +85,13 @@ class Percolation {
         open(3, 4);
         open(4, 1);
         open(4, 3);
+        // open(5, 1);
+        // open(5, 2);
+        open(1, 5);
+        open(2, 5);
+        open(3, 5);
+        open(4, 5);
+        open(5, 5);
 
         print();
 
