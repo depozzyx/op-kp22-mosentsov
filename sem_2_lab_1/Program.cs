@@ -68,7 +68,8 @@ class TextFiles {
 
     static void Task3()
     {
-
+        string readText = File.ReadAllText("input_task3.txt");
+        Console.WriteLine(readText); 
     }
 
     static void Task4()
