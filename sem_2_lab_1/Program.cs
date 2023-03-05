@@ -25,6 +25,9 @@ class TextFiles {
 
     static void Task1()
     {
+        string text = "Перша строка\nДруга строка";
+        Console.WriteLine(text);
+        File.WriteAllText("task1.txt", text);
     }
 
     static void Task2()
