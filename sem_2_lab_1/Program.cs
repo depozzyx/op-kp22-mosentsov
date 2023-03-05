@@ -66,6 +66,14 @@ class TextFiles {
         File.WriteAllText("max.txt", max.ToString());
     }
 
+    /* Завдання #3 
+     *
+     * Критерії роботи: 
+     *  1. Є файл з 40 словами, які не більше 80 символів 
+     *  2. На виході маємо відсортований на алфавітом слів файл 
+     *  3. Запис робиться у файл task3.txt
+     *
+     */
     static void Task3()
     {
         string readText = File.ReadAllText("input_task3.txt");
