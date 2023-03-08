@@ -116,9 +116,11 @@ class TextFiles {
      *  3. Запис робиться у файл task3.txt
      *
      */
+    const string TASK3_INPUT_FILENAME = "input_task3.txt";
+    const string TASK3_OUTPUT_FILENAME = "task3.txt";
     static void Task3()
     {
-        string allWords = File.ReadAllText("input_task3.txt");
+        string allWords = File.ReadAllText(TASK3_INPUT_FILENAME);
         List<string> splitted = Split(allWords, '\n');
 
         bool isSorted = false;
@@ -137,12 +139,9 @@ class TextFiles {
             }
         }
 
-        foreach (var word in splitted)
-        {
-            Console.Write(word + " ");   
-        }
-        Console.WriteLine("\n---"); 
 
+        File.WriteAllText(TASK3_OUTPUT_FILENAME, string.Join("\n", splitted));
+        Console.WriteLine("Відсортовані слова: " + string.Join(" ",splitted));
     }
     /*
      * Допоміжна ф-ція для завдання 3. Перевіряє чи менше за алфавітом слово a ніж слово b
