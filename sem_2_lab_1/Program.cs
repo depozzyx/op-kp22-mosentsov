@@ -148,9 +148,10 @@ class TextFiles {
      * 2. Показуються студенти, в яких score < 60
      * 3. Якщо поганих студентів немає, Показуються відповідне повідомлення
      */
+    const string TASK4_INPUT_FILENAME = "input_task4.csv";
     static void Task4()
     {
-        string csv = File.ReadAllText("input_task4.csv");
+        string csv = File.ReadAllText(TASK4_INPUT_FILENAME);
         List<string> students = Split(csv, '\n');
         bool hasBadStudents = false;
 
@@ -173,15 +174,16 @@ class TextFiles {
 
     }
 
-    /* Завдання #4
+    /* Завдання #5
      * Критерії роботи:
      * 1. Текст файла читається
      * 2. Рахується кількість слів між пробілами
      * 3. Рахується кількість слів між іншими символами
      */
+    const string TASK5_INPUT_FILENAME = "input_task5.txt";
     static void Task5()
     {
-        string text = File.ReadAllText("input_task5.txt");
+        string text = File.ReadAllText(TASK5_INPUT_FILENAME);
 
         // Вбудований Split не можна, але про регулярні вирази нічого не казали
         Regex rx = new Regex(@"(\w|-)+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -190,8 +192,60 @@ class TextFiles {
         Console.WriteLine("Кількість слів: " + matches.Count);
     }
 
+    /* Завдання #6
+     * Критерії роботи:
+     */
+    const string TASK6_FILENAME = "task6.bin";
+    const string TASK6_GOOD_STUDENTS_FILENAME = "task6_goodStudents.bin";
     static void Task6()
     {
+        {
+            BinaryWriter bw;
+            try {
+                bw = new BinaryWriter(new FileStream(TASK6_FILENAME, FileMode.Create));
+            } catch (IOException e) {
+                Console.WriteLine("Can't create file task6.bin. Maybe file exists?");
+                return;
+            }
+            string csv = File.ReadAllText(TASK4_INPUT_FILENAME);
+            bw.Write(csv);
+            bw.Close();
+        }
+
+        {
+            BinaryReader br;
+            try {
+                br = new BinaryReader(new FileStream(TASK6_FILENAME, FileMode.Open));
+            } catch (IOException e) {
+                Console.WriteLine("Can't open file task6.bin. Error: " + e);
+                return;
+            }
+            string csvNew = br.ReadString();
+
+            List<string> students = Split(csvNew, '\n');
+            List<string> goodStudents = new List<string>();
+            foreach (var student in students)
+            {
+                List<string> info = Split(student, ',');
+                int score = Int16.Parse(info[2]);
+
+                if (score > 95) {
+                    goodStudents.Add(student);
+                }
+            }
+
+            BinaryWriter bw;
+            try {
+                bw = new BinaryWriter(new FileStream(TASK6_GOOD_STUDENTS_FILENAME, FileMode.Create));
+            } catch (IOException e) {
+                Console.WriteLine("Can't create file task6_goodStudents.bin Maybe file exists?");
+                return;
+            }
+            bw.Write(goodStudents.Count);
+            foreach (var goodStudent in goodStudents)
+                bw.Write("\n" + goodStudent);
+            bw.Close();
+        }
 
     }
 }
