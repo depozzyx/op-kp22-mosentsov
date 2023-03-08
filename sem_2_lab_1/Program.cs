@@ -155,7 +155,7 @@ class TextFiles {
 
         foreach (var student in students)
         {
-            List<string> info = Split(student, ",");
+            List<string> info = Split(student, ',');
             string firstName = info[0],
                    lastName = info[1];
             int score = Int16.Parse(info[2]);
@@ -164,6 +164,10 @@ class TextFiles {
                 Console.WriteLine(firstName + " " + lastName + ": " + score + " - Поганий результат");
                 hasBadStudents = true;
             }
+        }
+
+        if (!hasBadStudents) {
+            Console.WriteLine("Студентів з рахунком <60 немає!");
         }
 
     }
