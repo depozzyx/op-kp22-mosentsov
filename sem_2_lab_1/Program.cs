@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 class TextFiles {
     static void Main(String[] args)
@@ -172,8 +173,21 @@ class TextFiles {
 
     }
 
+    /* Завдання #4
+     */
     static void Task5()
     {
+        Regex rx = new Regex(@"\b(?<word>\w+)\s+(\k<word>)\b",
+          RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        string text = "The the quick brown fox  fox jumps over the lazy dog dog.";
+
+        // Find matches.
+        MatchCollection matches = rx.Matches(text);
+
+        // Report the number of matches found.
+        Console.WriteLine("{0} matches found in:\n   {1}",
+                          matches.Count,
+                          text);
 
     }
 
