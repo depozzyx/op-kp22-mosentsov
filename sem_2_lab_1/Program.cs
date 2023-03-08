@@ -200,7 +200,7 @@ class TextFiles {
     static void Task5()
     {
         string text = File.ReadAllText(TASK5_INPUT_FILENAME);
-        text = ReplaceAll(text, "\n,.!", ' ');
+        text = ReplaceAll(text, "\n,.!?/&", ' ');
 
         List<string> words = Split(text, ' ');
         List<string> foundWords = new List<string>();
@@ -212,13 +212,16 @@ class TextFiles {
             string word = _word.ToLower();
 
             // find if word in found words
+            bool foundWord = false;
             for (int i = 0; i < foundWords.Count; i++)
             {
                 if (foundWords[i] == word) {
                     foundWordsCounts[i] += 1;
-                    continue;
+                    foundWord = true;
+                    break;
                 }   
             }
+            if (foundWord) continue;
 
             // if not, add to found words
             foundWords.Add(word);
@@ -292,6 +295,5 @@ class TextFiles {
                 bw.Write("\n" + goodStudent);
             bw.Close();
         }
-
     }
 }
