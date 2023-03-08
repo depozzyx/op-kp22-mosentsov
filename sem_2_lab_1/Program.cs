@@ -260,6 +260,7 @@ class TextFiles {
             bw.Write(csv);
             bw.Close();
         }
+        Console.WriteLine("Записано " + TASK6_FILENAME);
 
         {
             BinaryReader br;
@@ -295,5 +296,6 @@ class TextFiles {
                 bw.Write("\n" + goodStudent);
             bw.Close();
         }
+        Console.WriteLine("Записано " + TASK6_GOOD_STUDENTS_FILENAME);
     }
 }
