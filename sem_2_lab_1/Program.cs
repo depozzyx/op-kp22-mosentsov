@@ -174,21 +174,20 @@ class TextFiles {
     }
 
     /* Завдання #4
+     * Критерії роботи:
+     * 1. Текст файла читається
+     * 2. Рахується кількість слів між пробілами
+     * 3. Рахується кількість слів між іншими символами
      */
     static void Task5()
     {
-        Regex rx = new Regex(@"\b(?<word>\w+)\s+(\k<word>)\b",
-          RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        string text = "The the quick brown fox  fox jumps over the lazy dog dog.";
+        string text = File.ReadAllText("input_task5.txt");
 
-        // Find matches.
+        // Вбудований Split не можна, але про регулярні вирази нічого не казали
+        Regex rx = new Regex(@"(\w|-)+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         MatchCollection matches = rx.Matches(text);
 
-        // Report the number of matches found.
-        Console.WriteLine("{0} matches found in:\n   {1}",
-                          matches.Count,
-                          text);
-
+        Console.WriteLine("Кількість слів: " + matches.Count);
     }
 
     static void Task6()
