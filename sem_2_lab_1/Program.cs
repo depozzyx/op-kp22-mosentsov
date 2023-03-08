@@ -71,9 +71,9 @@ class TextFiles {
      */
     static void Task1()
     {
-        string text = "Перша строка\nДруга строка";
+        string text = "Перша строка\nДруга строка файлу";
         Console.WriteLine(text);
-        File.WriteAllText("task1.txt", string.Join("--", Split(text, ' ')));
+        File.WriteAllText("task1.txt", text);
     }
 
     /* Завдання #2 
@@ -85,6 +85,8 @@ class TextFiles {
      *  4. Запис максимального робиться у файл max.txt 
      *
      */
+    const string TASK2_OUTPUT_FILENAME = "task2.txt";
+    const string TASK2_OUTPUT_MAX_FILENAME = "max.txt";
     static void Task2()
     {
         System.Random random = new System.Random();
@@ -99,8 +101,11 @@ class TextFiles {
 
             numbers += number.ToString() + " "; 
         }
-        File.WriteAllText("task2.txt", numbers);
-        File.WriteAllText("max.txt", max.ToString());
+        File.WriteAllText(TASK2_OUTPUT_FILENAME, numbers);
+        File.WriteAllText(TASK2_OUTPUT_MAX_FILENAME, max.ToString());
+
+        Console.WriteLine("Записано усі числа в " + TASK2_OUTPUT_FILENAME);
+        Console.WriteLine("Записано максимальне в " + TASK2_OUTPUT_MAX_FILENAME);
     }
 
     /* Завдання #3 
