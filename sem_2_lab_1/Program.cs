@@ -142,17 +142,30 @@ class TextFiles {
         return lengthA < lengthB;
     }
     /* Завдання #4
-     *
+     * Критерії роботи:
+     * 1. Файл читається правильно та студенти правильно ідентификуються
+     * 2. Показуються студенти, в яких score < 60
+     * 3. Якщо поганих студентів немає, Показуються відповідне повідомлення
      */
     static void Task4()
     {
         string csv = File.ReadAllText("input_task4.csv");
         List<string> students = Split(csv, '\n');
+        bool hasBadStudents = false;
 
         foreach (var student in students)
         {
             List<string> info = Split(student, ",");
+            string firstName = info[0],
+                   lastName = info[1];
+            int score = Int16.Parse(info[2]);
+
+            if (score < 60) {
+                Console.WriteLine(firstName + " " + lastName + ": " + score + " - Поганий результат");
+                hasBadStudents = true;
+            }
         }
+
     }
 
     static void Task5()
