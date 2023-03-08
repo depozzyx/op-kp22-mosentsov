@@ -45,6 +45,20 @@ class TextFiles {
 
         return result;
     }
+    static private string Replace(string str, char replaceFrom, char replaceTo)
+    {
+        int len = str.Length;
+        for (int i = 0; i < len; i++)
+            if (str[i] == replaceFrom) 
+                str = str.Substring(0, i) + " " + str.Substring(i + 1, len - (i + 1));
+        return str;
+    }
+    static private string ReplaceAll(string str, string replaceFromSymbols, char replaceTo)
+    {
+        foreach (var chr in replaceFromSymbols)
+            str = Replace(str, chr, replaceTo); 
+        return str;
+    }
 
     /* Завдання #1 
      *
@@ -175,21 +189,44 @@ class TextFiles {
     }
 
     /* Завдання #5
+     *
      * Критерії роботи:
-     * 1. Текст файла читається
-     * 2. Рахується кількість слів між пробілами
-     * 3. Рахується кількість слів між іншими символами
+     * 1. Виводиться список кількостей слів
+     * 2. Список кількостей слів правильний
+     * 3. Слова розділяються правильно
+     * 4. Немає різниці чи слово з великої літери чи ні
      */
     const string TASK5_INPUT_FILENAME = "input_task5.txt";
     static void Task5()
     {
         string text = File.ReadAllText(TASK5_INPUT_FILENAME);
+        text = ReplaceAll(text, "\n,.!", ' ');
 
-        // Вбудований Split не можна, але про регулярні вирази нічого не казали
-        Regex rx = new Regex(@"(\w|-)+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        MatchCollection matches = rx.Matches(text);
+        List<string> words = Split(text, ' ');
+        List<string> foundWords = new List<string>();
+        List<int> foundWordsCounts = new List<int>();
 
-        Console.WriteLine("Кількість слів: " + matches.Count);
+        foreach (var _word in words)
+        {
+            if (_word.Length == 0) continue;
+            string word = _word.ToLower();
+
+            // find if word in found words
+            for (int i = 0; i < foundWords.Count; i++)
+            {
+                if (foundWords[i] == word) {
+                    foundWordsCounts[i] += 1;
+                    continue;
+                }   
+            }
+
+            // if not, add to found words
+            foundWords.Add(word);
+            foundWordsCounts.Add(1);
+        }
+
+        for (int i = 0; i < foundWords.Count; i++)
+            Console.WriteLine(foundWords[i] + ": " + foundWordsCounts[i]);   
     }
 
     /* Завдання #6
