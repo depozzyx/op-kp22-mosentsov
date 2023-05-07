@@ -5,10 +5,19 @@ class Program
 {
     static void Main(String[] args) 
     {
+        Console.WriteLine("\n\nЗавдання #1");
         Task1();
+
+        Console.WriteLine("\n\nЗавдання #2.1");
         Task21();
+
+        Console.WriteLine("\n\nЗавдання #2.2");
         Task22();
+
+        Console.WriteLine("\n\nЗавдання #2.3");
         Task23();
+
+        Console.WriteLine("\n\nЗавдання #3");
         Task3();
     }
 
@@ -49,7 +58,7 @@ class Program
 
     static void Task21()
     {
-        var records = new Records();
+        new Records();
     }
 
     static void Task22()
