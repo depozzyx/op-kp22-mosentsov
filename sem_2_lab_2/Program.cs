@@ -28,7 +28,10 @@ class Program
 
         for (int i = 0; i < n; i++)
         {
-            records.Add(new Record((uint) i + 1, "name", 100, 120));
+            var name = Utils.readString("Ім'я #" + (i + 1));
+            var salary = (uint) Utils.readNumber("Зарплату грн #" + (i + 1));
+            var on_hold = (uint) Utils.readNumber("Утримано грн #" + (i + 1));
+            records.Add(new Record((uint) i + 1, name, salary, on_hold));
         }
 
         uint totalSalary = 0, totalOnHold = 0, totalReceived = 0;
@@ -109,6 +112,12 @@ class Utils
         return Convert.ToDouble(Console.ReadLine());
     }
 
+    public static string readString(string variableName)
+    {
+        Console.Write("Введіть " + variableName + " : ");
+        return Console.ReadLine();
+    }
+
     public static void printFixed(string str, uint fixedn)
     {
         Console.Write(str);
@@ -162,11 +171,12 @@ class Records
         records = new List<Record>();
 
         var n = (uint) Utils.readNumber("кількість записів таблиці");
-        
-
         for (int i = 0; i < n; i++)
         {
-            records.Add(new Record((uint) i + 1, "name", 100, 120));
+            var name = Utils.readString("Ім'я #" + (i + 1));
+            var salary = (uint) Utils.readNumber("Зарплату грн #" + (i + 1));
+            var on_hold = (uint) Utils.readNumber("Утримано грн #" + (i + 1));
+            records.Add(new Record((uint) i + 1, name, salary, on_hold));
         }
 
         uint totalSalary = 0, totalOnHold = 0, totalReceived = 0;
