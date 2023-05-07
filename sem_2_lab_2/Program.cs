@@ -74,6 +74,22 @@ class Program
         }
     }
 
+    static void Task3()
+    {
+        Vector vector1 = new Vector(new int[] { -1, 2, -3, 4, -5 });
+        Vector vector2 = new Vector(new int[] { 1, -2, 3, -4, 5 });
+
+        Console.WriteLine("Два вектора: " + vector1 + " & " + vector2);
+
+        int sum = vector1 + vector2;
+        Console.WriteLine("Сума від'ємних елементів двох векторів: " + sum);
+
+        Vector mult = vector1 * vector2;
+        Console.WriteLine("Добуток елементів двох векторів із парними номерами: " + mult);
+
+        int zeroCount = vector1 == vector2;
+        Console.WriteLine("Кількість елементів двох векторів, рівних 0: " + zeroCount);
+    }
 }
 
 class Utils 
@@ -229,5 +245,69 @@ class Submarine2 : IVessel
     public void Move()
     {
         Console.WriteLine("*intface brrrrrr...*, Submarine moving");
+    }
+}
+
+// Task 3
+class Vector
+{
+    private int[] elements;
+
+    public Vector(int[] elements)
+    {
+        this.elements = elements;
+    }
+
+    public static int operator +(Vector vector1, Vector vector2)
+    {
+        int count = 0;
+
+        for (int i = 0; i < vector1.elements.Length; i++)
+            if (vector1.elements[i] < 0)
+                count += vector1.elements[i];
+
+        for (int i = 0; i < vector2.elements.Length; i++)
+            if (vector2.elements[i] < 0)
+                count += vector2.elements[i];
+
+        return count;
+    }
+
+    public static Vector operator *(Vector vector1, Vector vector2)
+    {
+        int len = vector1.elements.Length;
+        int[] result = new int[len % 2 == 0 ? (int) len / 2 : (int) len / 2 + 1];
+        int index = 0;
+        for (int i = 0; i < vector1.elements.Length; i += 2) 
+        {
+            result[index] = vector1.elements[index] * vector2.elements[index];
+            index += 1;
+        }
+
+        return new Vector(result);
+    }
+
+    public static int operator ==(Vector vector1, Vector vector2)
+    {
+        int count = 0;
+        for (int i = 0; i < vector1.elements.Length; i++)
+            if (vector1.elements[i] == 0)
+                count += 1;
+
+        for (int i = 0; i < vector2.elements.Length; i++)
+            if (vector2.elements[i] == 0)
+                count += 1;
+
+        return count;
+    }
+
+    public static int operator !=(Vector vector1, Vector vector2)
+    {
+        return -1;
+    }
+
+    public override string ToString()
+    {
+        return "Vector<" + string.Join(", ", elements) + ">";
     }
 }
