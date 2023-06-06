@@ -4,12 +4,90 @@ class Program
 {
     static public void Main()
     {
-        var table = new HashTable<string, string>(100);
-        table.Add("student", "student111");
-        Console.WriteLine(table.Get("student"));
+        new SpellingTool();
     }
+
 }
 
+public class SpellingTool 
+{
+    public HashTable<string, bool> words;
+
+    public SpellingTool() 
+    {
+        this.words = new HashTable<string, bool>(100);
+        initWords();
+
+        Console.WriteLine("============");
+        Console.WriteLine("Welcome to spelling tool!");
+        Console.WriteLine("");
+        Console.WriteLine("Write any amount of words (new lines supported) and you");
+        Console.WriteLine("will get notification when someting's wrong");
+        Console.WriteLine("");
+        Console.WriteLine("Write 'exit' to exit the program");
+        Console.WriteLine("============");
+
+        while (true) 
+        {
+            string line = Console.ReadLine();
+            if (line == "exit") 
+            {
+                Console.WriteLine("============ Exited ============");
+                break;
+            }
+
+            var enteredWords = line.Split(" "); 
+            bool isError = false;
+            foreach (var word in enteredWords)
+            {
+                if (!words.Contains(word.ToLower())) 
+                {
+                    if (!isError) 
+                    {
+                        Console.WriteLine("============\nError(s) found:");
+                    }
+                    Console.WriteLine(" [*] Word '" + word + "' not found in dictionary");
+                    isError = true;
+                }
+            }
+            if (isError) Console.WriteLine("============");
+        }
+    }
+
+    private void initWords()
+    {
+        newWords(new string[]{
+            "the", "at", "there", "some", "my",
+            "of", "be", "use", "her", "than",
+            "and", "this", "an", "would", "first",
+            "a", "have", "each", "make", "water",
+            "to", "from", "which", "like", "been",
+            "in", "or", "she", "him", "call",
+            "is", "one", "do", "into", "who",
+            "you", "had", "how", "time", "oil",
+            "that", "by", "their", "has", "its",
+            "it", "word", "if", "look", "now",
+            "he", "but", "will", "two", "find",
+            "was", "not", "up", "more", "long",
+            "for", "what", "other", "write", "down",
+            "on", "all", "about", "go", "day",
+            "are", "were", "out", "see", "did",
+            "as", "we", "many", "number", "get",
+            "with", "when", "then", "no", "come",
+            "his", "your", "them", "way", "made",
+            "they", "can", "these", "could", "may",
+            "i", "said", "so", "people", "part",
+        });
+    }
+
+    private void newWords(string[] newWordsArr)
+    {
+        foreach (var word in newWordsArr)
+        {
+            words.Add(word, true);  
+        }
+    }
+}
 
 public class HashTable<KItem, VItem> where KItem: IConvertible
 {
@@ -61,8 +139,7 @@ public class HashTable<KItem, VItem> where KItem: IConvertible
     {
         uint index = this.hash(key);
 
-        if (buckets.Length <= index) return false; 
-        if (buckets[index] == null) return false;
+        if (Get(key) == null) return false;
 
         return true;
     }
