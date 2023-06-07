@@ -92,6 +92,30 @@ public class Deque<Item> : IIterable<Item> {
     public static void main(String[] args)
     {
         var deque = new Deque<string>();
+        deque.Print();
+        deque.addLast("the");
+        deque.Print();
+        deque.addLast("danger");
+        deque.Print();
+        deque.addFirst("nononon");
+        deque.Print();
+        deque.removeFirst();
+        deque.Print();
+        deque.addFirst("am");
+        deque.Print();
+        deque.addFirst("I");
+        deque.Print();
+        deque.addLast("!");
+        deque.Print();
+        deque.removeLast();
+        deque.Print();
+        deque.removeLast();
+        deque.Print();
+        deque.addFirst("!");
+        deque.Print();
+        deque.addLast("?");
+        deque.Print();
+        Console.WriteLine("Correct output: ! -> I -> am -> the -> ?");
     }
 }
 
@@ -186,6 +210,27 @@ public class RandomizedQueue<Item> : IIterable<Item> {
     public static void main(String[] args)
     {
         var queue = new RandomizedQueue<string>();
+        queue.Print();
+        queue.enqueue("1");
+        queue.enqueue("2");
+        queue.enqueue("3");
+        queue.enqueue("4");
+        queue.enqueue("5");
+        queue.Print();
+        Console.WriteLine("dequeue " + queue.dequeue());
+        Console.WriteLine("dequeue " + queue.dequeue());
+        Console.WriteLine("sample " + queue.sample());
+        Console.WriteLine("dequeue " + queue.dequeue());
+        queue.Print();
+        Console.WriteLine("sample " + queue.sample());
+        Console.WriteLine("sample " + queue.sample());
+        Console.WriteLine("sample " + queue.sample());
+        queue.Print();
+        Console.WriteLine("dequeue " + queue.dequeue());
+        queue.Print();
+        Console.WriteLine("dequeue " + queue.dequeue());
+        queue.Print();
+        Console.WriteLine("Correct output: All items are randomly out. Samples choose randomly items form list, but do not remove");
     }
 }
 
