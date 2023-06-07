@@ -76,7 +76,7 @@ public class SpellingTool
             "with", "when", "then", "no", "come",
             "his", "your", "them", "way", "made",
             "they", "can", "these", "could", "may",
-            "i", "said", "so", "people", "part",
+            "i", "said", "so", "people", "part", "am"
         });
     }
 
@@ -139,7 +139,7 @@ public class HashTable<KItem, VItem> where KItem: IConvertible
     {
         uint index = this.hash(key);
 
-        if (Get(key) == null) return false;
+        if (Convert.ToString(Get(key)) == Convert.ToString(default(VItem))) return false;
 
         return true;
     }
