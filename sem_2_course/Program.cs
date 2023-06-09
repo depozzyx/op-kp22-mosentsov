@@ -278,11 +278,8 @@ public class PasswordManagerUI
                         
                     })
                     .add("Create memory password store", () => new UI.UIResponse(true, createStore("memory")))
-                    .add("Load JSON password store", () => {
-
-                        return new UI.UIResponse(true, createStore("memory"));
-                    })
-                    .add("Create JSON password store", () => new UI.UIResponse(true, createStore("json")))
+                    .add("Load binary password store", () => new UI.UIResponse(true, createStore("loadBinary")))
+                    .add("Create binary password store", () => new UI.UIResponse(true, createStore("binary")))
                     .add("Run tests", () => {
                         PasswordManager.main();
                         return new UI.UIResponse(true, null);
@@ -308,25 +305,18 @@ public class PasswordManagerUI
                 new UI.UISelect("Enter password and choose submit. Or cancel action")
                     .add("Submit", () => {
                         if (storeType == "memory")
-                        {
-                            this.store = new PasswordManager.PasswordManagerStoreMemory("passwords.json");
-                            var auth = new PasswordManager.PasswordManagerAuth(this.inputtedText, "session1")
-                                .expiresIn(600);
-
-                            this.manager = new PasswordManager(store);
-                            this.manager.setMasterPassword(auth.getPassword());
-                        }
-                        else if (storeType == "json")
-                        {
-                            this.store = new PasswordManager.PasswordManagerStoreMemory("passwords.json");
-                            var auth = new PasswordManager.PasswordManagerAuth(this.inputtedText, "session1")
-                                .expiresIn(600);
-
-                            this.manager = new PasswordManager(store);
-                            this.manager.setMasterPassword(auth.getPassword());
-                        }
+                            this.store = new PasswordManager.PasswordManagerStoreMemory();
+                        else if (storeType == "binary")
+                            this.store = new PasswordManager.PasswordManagerStoreBinary("passwords.bin", true);
+                        else if (storeType == "loadBinary")
+                            this.store = new PasswordManager.PasswordManagerStoreBinary("passwords.bin", false);
                         else 
                             return new UI.UIResponse(true, mainMenu("Password not created. Invalid storeType"));
+
+                        var auth = new PasswordManager.PasswordManagerAuth(this.inputtedText, "session1")
+                            .expiresIn(600);
+                        this.manager = new PasswordManager(store);
+                        this.manager.setMasterPassword(auth.getPassword());
 
                         this.inputtedText = null;
                         return new UI.UIResponse(true, mainMenu("Password store created!\nNow unlock it"));
@@ -465,9 +455,11 @@ public class PasswordManagerUI
 public class PasswordManager
 {
     // classes
+    [Serializable]
     public class Password 
     {
         // classes
+        [Serializable]
         public abstract class PasswordAlghorithm {
             public abstract byte[] encrypt(string value, string encryptionKey);
             public abstract byte[] encrypt(string value, byte[] encryptionKey);
@@ -475,6 +467,7 @@ public class PasswordManager
             public abstract string decrypt(byte[] value, byte[] encryptionKey);
         }
 
+        [Serializable]
         public class PasswordAlghorithmAES : PasswordAlghorithm 
         {
             public Aes getAes(byte[] passwordBytes)
@@ -552,6 +545,8 @@ public class PasswordManager
                 return plaintext;
             }
         }
+
+        [Serializable]
         public class PasswordAlghorithmPlainText : PasswordAlghorithm 
         {
             public override byte[] encrypt(string value, string encryptionKey)
@@ -644,14 +639,12 @@ public class PasswordManager
         // classes
 
         // vars
-        public string path;
         private Password masterPassword;
         private IDictionary<string, Password> passwords;
 
         // methods
-        public PasswordManagerStoreMemory(string path)
+        public PasswordManagerStoreMemory()
         {
-            this.path = path;
             this.passwords = new Dictionary<string, Password>();   
         }
 
@@ -685,6 +678,92 @@ public class PasswordManager
         {
             return (
                 BitConverter.ToString(this.masterPassword.value) 
+                == 
+                BitConverter.ToString(possibleMasterPassword.value)
+            );
+        }
+    }
+    public class PasswordManagerStoreBinary : PasswordManagerStore
+    {
+        // classes
+        [Serializable]
+        public class JSON 
+        {
+            public Password masterPassword;
+            public IDictionary<string, Password> passwords;
+        }
+
+        // vars
+        public string path;
+
+        // methods
+        public PasswordManagerStoreBinary(string path, bool createEmpty)
+        {
+            this.path = path;
+            if (createEmpty)
+            {
+                var json = new JSON();
+                json.masterPassword = null;
+                json.passwords = new Dictionary<string, Password>();
+                saveJSON(json);
+            }
+        }
+
+        private JSON getJSON()
+        {
+            using (Stream stream = File.Open(path, FileMode.Open))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                return (JSON)binaryFormatter.Deserialize(stream);
+            }
+        }
+
+        private void saveJSON(JSON data)
+        {
+            using (Stream stream = File.Open(path, FileMode.Create))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, data);
+            }
+        }
+
+        public override void save(string key, Password password)
+        {
+            var data = getJSON();
+            data.passwords[key] = password;
+            saveJSON(data);
+        }
+
+        public override List<string> keys()
+        {
+            var data = getJSON();
+            var list = new List<String>();
+            foreach (var item in data.passwords)
+            {
+                list.Add(item.Key);   
+            }
+            return list;
+        }
+
+        public override Password get(string key)
+        {
+            var data = getJSON();
+            return data.passwords[key];
+        }
+
+        public override void setMasterPassword(Password password)
+        {
+            var data = getJSON();
+            if (data.masterPassword != null) return;
+            
+            data.masterPassword = password;
+            saveJSON(data);
+        }
+        public override bool masterPasswordValid(Password possibleMasterPassword)
+        {
+            var data = getJSON();
+            return (
+                BitConverter.ToString(data.masterPassword.value) 
                 == 
                 BitConverter.ToString(possibleMasterPassword.value)
             );
@@ -756,20 +835,25 @@ public class PasswordManager
 
     public static void main()
     {
-        var store = new PasswordManager.PasswordManagerStoreMemory("passwords.json");
+        var store = new PasswordManager.PasswordManagerStoreMemory();
         var regAuth = new PasswordManager.PasswordManagerAuth("password_unlock", "session1")
             .expiresIn(10);
 
         var manager = new PasswordManager(store);
         manager.setMasterPassword(regAuth.getPassword());
 
-        var auth = new PasswordManager.PasswordManagerAuth("asasas", "session1")
+        var auth = new PasswordManager.PasswordManagerAuth("password_unlock", "session1")
             .expiresIn(50);
 
         manager 
             .unlock(auth)
-            .save("test", "testpass")
+            .save("test", "Test #1 Passed")
+            .save("test2", "Test #2")
             .lockAgain();
+
+        manager.unlock(auth);
+        Console.WriteLine(manager.retreive("test2"));
+        manager.lockAgain();
 
         manager.unlock(auth);
         Console.WriteLine(manager.retreive("test"));
